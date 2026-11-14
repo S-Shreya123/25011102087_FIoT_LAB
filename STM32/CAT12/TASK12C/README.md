@@ -4,6 +4,8 @@
 
 The NUCLEO-F401RE's on-board push button and user LED are used to implement short-press and long-press detection.
 
+[Circuit Diagram](circuit.png)
+
 **Hardware Configuration:**
 - Microcontroller: STM32F401RE Cortex-M4
 - Push Button: On-board user button (B1)

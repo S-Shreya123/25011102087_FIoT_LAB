@@ -12,6 +12,8 @@
 
 The BME280 sensor is interfaced with the STM32 development board using the I²C1 communication protocol.
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 - BME280 VCC → 3.3V
 - BME280 GND → GND

@@ -22,6 +22,8 @@ The experiment involves interfacing an LED with the 8051 microcontroller and con
 - **Peripheral:** LED with current-limiting resistor
 - **Power Supply:** 5V DC
 
+[Circuit Diagram](circuit.png)
+
 ### 2. Core Logic / Pseudocode / Code Base
 
 **Working Principle:**

@@ -4,6 +4,8 @@
 
 The NUCLEO-F401RE has an on-board push button connected to PC13 and an on-board user LED (LD2) connected to PA5. No external components are required.
 
+[Circuit Diagram](circuit.png)
+
 **Hardware Configuration:**
 - Push Button: On-board user button (B1)
 - Button GPIO: PC13

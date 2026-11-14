@@ -22,6 +22,8 @@ The experiment uses Timer 0 of the AT89S52 microcontroller to generate periodic 
 - **LED GPIO Pin:** P3.1
 - **Power Supply:** 5V DC
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 
 - Connect the LED to P3.1 through a current-limiting resistor.

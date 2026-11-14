@@ -16,6 +16,8 @@
 
 The experiment interfaces a push button and an LED with the STM32 microcontroller using GPIO input and output pins.
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 
 - PA5 → Push-button input

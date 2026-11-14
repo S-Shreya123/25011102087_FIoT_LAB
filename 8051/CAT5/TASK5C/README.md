@@ -22,6 +22,8 @@ The experiment uses four GPIO pins of the AT89S52 microcontroller to control a s
 - **Driver:** Compatible stepper motor driver
 - **Power Supply:** As required by the motor and driver
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 - Connect P3.0–P3.3 to the four input pins of the motor driver.
 - Connect the motor coils to the corresponding driver outputs.

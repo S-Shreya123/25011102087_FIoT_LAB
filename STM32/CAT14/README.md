@@ -12,6 +12,8 @@
 
 The ESP8266 Wi-Fi module is interfaced with the STM32 development board through USART1 communication.
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 - STM32 USART1 TX → ESP8266 RX
 - STM32 USART1 RX → ESP8266 TX

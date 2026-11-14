@@ -16,6 +16,8 @@
 
 The 16×2 LCD is interfaced with the AT89S52 using four data lines and two control signals. The LCD operates in 4-bit mode, allowing data and commands to be transferred using D4–D7.
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 
 - P3.4 → LCD D4

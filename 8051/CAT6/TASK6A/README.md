@@ -22,6 +22,8 @@ The AT89S52 communicates with a PC through a USB-to-TTL serial converter. The UA
 - Connect the grounds of the microcontroller board and converter.
 - Connect the USB-to-TTL converter to the PC and open its COM port using PuTTY.
 
+[Circuit Diagram](circuit.png)
+
 ### 2. Core Logic / Pseudocode / Code Base
 
 **Working Principle:**

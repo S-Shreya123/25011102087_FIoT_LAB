@@ -12,6 +12,8 @@
 
 The on-board user LED (LD2) of the NUCLEO-F401RE is connected to PA5. No external LED connection is required.
 
+[Circuit Diagram](circuit.png)
+
 **Hardware Configuration:**
 - Microcontroller: STM32F401RE Cortex-M4
 - LED: On-board user LED (LD2)

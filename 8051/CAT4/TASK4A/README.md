@@ -25,6 +25,8 @@ The experiment involves interfacing a 4×4 matrix keypad, four LEDs and a seven-
 - **LED GPIO Port:** Port 1
 - **Power Supply:** 5V DC
 
+[Circuit Diagram](circuit.png)
+
 ### 2. Core Logic / Pseudocode / Code Base
 
 **Working Principle:**

@@ -4,6 +4,8 @@
 
 The STM32 microcontroller communicates with the Wemos D1 Mini (ESP8266) through UART. USART1 is used for communication with the Wemos, while USART2 is used to forward the received response to the PC terminal.
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 
 | STM32 Pin | Wemos D1 Mini Pin | Purpose |

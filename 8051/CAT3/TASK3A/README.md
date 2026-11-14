@@ -24,6 +24,8 @@ The experiment involves interfacing four LEDs and a push-button with the AT89S52
 - **Peripheral:** Four LEDs and a push-button
 - **Power Supply:** 5V DC
 
+[Circuit Diagram](circuit.png)
+
 ### 2. Core Logic / Pseudocode / Code Base
 
 **Working Principle:**

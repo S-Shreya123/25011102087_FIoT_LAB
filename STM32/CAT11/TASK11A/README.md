@@ -25,6 +25,8 @@ The STM32 communicates with the Wemos ESP8266 module through UART1. UART2 is use
        STM32 USART2  ──────────────►  PC Terminal
 ```
 
+[Circuit Diagram](circuit.png)
+
 ### 2. Core Logic
 
 The STM32 configures the ESP8266 as a Wi-Fi station and establishes a TCP server using AT commands.

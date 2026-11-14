@@ -12,6 +12,8 @@
 
 The BME280 sensor is interfaced with the STM32 development board using the I²C1 protocol. The ESP8266 communicates with the STM32 through UART and forwards the sensor data to an MQTT broker over Wi-Fi.
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 
 **BME280 to STM32:**

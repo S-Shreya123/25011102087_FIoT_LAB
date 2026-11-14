@@ -16,6 +16,8 @@
 
 The STM32 communicates with a PC terminal through a serial connection using USART2.
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 - STM32 USART2 TX → USB-to-Serial RX
 - STM32 USART2 RX → USB-to-Serial TX

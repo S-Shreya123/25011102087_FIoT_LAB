@@ -17,6 +17,8 @@ The STM32 communicates with the Wemos ESP8266 module through UART1. A browser on
         STM32 Board
 ```
 
+[Circuit Diagram](circuit.png)
+
 **Connections:**
 - ESP8266 TX → STM32 UART1 RX
 - ESP8266 RX → STM32 UART1 TX
