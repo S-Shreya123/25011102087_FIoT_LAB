@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\led.obj" 
+TO ".\Objects\Day 1" 
+PRINT(".\Listings\Day 1.m51") RAMSIZE(256) 
