@@ -1,7 +1,7 @@
 # EXPERIMENT DETAILS
 
 - **EXP:** 15
-- **DATE:** 08/11/2026
+- **DATE:** 12/11/2026
 - **NAME OF EXP:** Smart Indoor Comfort Advisor Using BME280, MQTT and Node-RED
 - **HARDWARE SETUP:** STM32 NUCLEO Development Board, BME280 Sensor and ESP8266 / Wemos D1 Mini
 - **PLATFORM:** STM32CubeMX, Keil MDK, Arduino IDE and Node-RED

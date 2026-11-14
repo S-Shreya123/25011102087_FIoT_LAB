@@ -1,140 +1,233 @@
 # CAT6 – Task C: Interrupt-Driven UART Reception Using Ring Buffer
 
-## Experiment Overview
+## Experiment Details
 
-This experiment demonstrates interrupt-driven UART communication using the AT89S52 microcontroller. Instead of continuously checking for incoming serial data, the microcontroller uses its serial interrupt to receive characters.
+| Field | Description |
+| :--- | :--- |
+| **Experiment ID** | CAT6 |
+| **Date** | 20/08/2026 |
+| **Experiment Name** | Interrupt-Driven UART Reception Using Ring Buffer |
+| **Task Number** | Task C |
+| **Microcontroller** | AT89S52 |
+| **Development Board** | 8051 Universal Development Board |
+| **Programming Language** | Embedded C |
 
-Received characters are stored temporarily in a 16-byte circular buffer. The main program retrieves these characters from the buffer and transmits them back to the PC terminal.
+## Objective
 
-## Hardware Setup
+To implement interrupt-driven UART communication using the AT89S52 microcontroller. Incoming serial characters are received through the serial interrupt and temporarily stored in a 16-byte circular buffer. The main program retrieves the buffered characters and transmits them back to the PC terminal.
+
+## Hardware Requirements
 
 | Component | Specification |
-|---|---|
+| :--- | :--- |
 | Microcontroller | AT89S52 |
 | Development Board | 8051 Universal Development Board |
-| Programming Environment | Keil µVision |
 | Operating Voltage | +5V |
 | Crystal Frequency | 11.0592 MHz |
 | Communication Interface | UART |
+| UART RX Pin | P3.0 (RXD) |
+| UART TX Pin | P3.1 (TXD) |
 | Serial Converter | USB-to-TTL Converter |
-| PC Terminal | PuTTY |
+| PC Serial Terminal | PuTTY |
 | Baud Rate | 9600 |
 | Ring Buffer Size | 16 bytes |
-
-## Hardware Connections
-
-The AT89S52 communicates with the PC through a USB-to-TTL serial converter.
-
-| AT89S52 Pin | USB-to-TTL Converter |
-|---|---|
-| P3.0 (RXD) | TX |
-| P3.1 (TXD) | RX |
-| GND | GND |
-
-**Connection Notes:**
-- The converter's TX pin connects to the microcontroller's RXD pin.
-- The converter's RX pin connects to the microcontroller's TXD pin.
-- Both devices must share a common ground.
-- Use a TTL-level USB-to-serial converter compatible with the board's 5V logic.
-- The USB-to-TTL converter connects to the PC through USB.
+| Programming Environment | Keil µVision |
 
 ## Circuit Diagram
 
-[Circuit Diagram](circuit.png)
+![Circuit Diagram](circuit.png)
+
+### Hardware Connections
+
+| AT89S52 | USB-to-TTL Converter | Description |
+| :--- | :--- | :--- |
+| P3.0 (RXD) | TX | Receives serial data from the PC |
+| P3.1 (TXD) | RX | Transmits serial data to the PC |
+| GND | GND | Common ground |
+
+The USB-to-TTL converter connects to the PC through USB, while PuTTY is used as the serial terminal.
+
+**Connection Notes:**
+- Connect the converter's TX pin to the microcontroller's RXD pin.
+- Connect the converter's RX pin to the microcontroller's TXD pin.
+- Ensure both devices share a common ground.
+- Use a TTL-level USB-to-Serial converter compatible with the AT89S52's 5V logic. Do not use an RS-232 interface directly.
 
 ## UART Configuration
 
-UART communication is configured using the AT89S52's serial interface and Timer 1.
+| Parameter | Configuration |
+| :--- | :--- |
+| Baud Rate | 9600 |
+| Timer | Timer 1 |
+| Timer Mode | Mode 2 (8-bit auto-reload) |
+| Serial Mode | Mode 1 (8-bit UART) |
+| Serial Interrupt | Enabled (Interrupt 4) |
+| Global Interrupt | Enabled |
+| Reception | Interrupt-driven |
+| Transmission | UART using SBUF |
 
-- Timer 1 operates in Mode 2 (8-bit auto-reload).
-- UART operates in serial Mode 1.
-- Baud rate is configured to 9600.
-- The serial interrupt and global interrupt are enabled.
-- Incoming data is received through the SBUF register.
-- Serial interrupt handling is performed using interrupt number 4.
+## Working Principle
 
-## Interrupt-Driven Reception
+Unlike polling-based UART communication, this experiment uses the AT89S52 serial interrupt to handle incoming characters.
 
-The program uses the serial interrupt to handle incoming characters.
+1. Initialize UART and configure Timer 1 in Mode 2.
+2. Configure serial communication for 9600 baud.
+3. Enable the serial interrupt and global interrupts.
+4. Wait for incoming serial data.
+5. When a character is received, the serial interrupt is triggered.
+6. Read the received character from the SBUF register.
+7. Store the character in the circular buffer at the position indicated by the head index.
+8. Update the head index to the next buffer position.
+9. Return from the interrupt, allowing the main program to continue processing buffered data.
 
-1. Initialize the UART and configure Timer 1.
-2. Enable the serial interrupt and global interrupts.
-3. Wait for incoming serial data.
-4. When a character arrives, the serial interrupt is triggered.
-5. Read the received character from SBUF.
-6. Store the character in the circular buffer.
-7. Update the head index to the next buffer position.
-8. Return from the interrupt and allow the main program to continue.
-
-This approach avoids continuously polling the UART receive flag in the main program.
+This separates character reception from character processing and avoids continuously polling the UART receive flag in the main program.
 
 ## Circular Buffer Implementation
 
-A circular buffer is used to temporarily store received characters until the main program processes them.
+A circular buffer is used to temporarily store incoming characters until the main program retrieves them.
 
-The buffer has a total size of 16 bytes and uses two index variables:
+The implementation uses two index variables:
 
 | Variable | Purpose |
-|---|---|
-| Head | Indicates the next position where incoming data can be stored |
-| Tail | Indicates the next position from which data can be retrieved |
+| :--- | :--- |
+| `head` | Indicates the next position where incoming data can be stored |
+| `tail` | Indicates the next position from which data can be retrieved |
 
-**Buffer Characteristics:**
-- Total buffer size: 16 bytes
-- Usable capacity: 15 bytes
-- One position is reserved to distinguish between full and empty states.
-- The indices wrap around when they reach the end of the buffer.
-- When the buffer is full, newly received characters are discarded.
+### Buffer Characteristics
 
-The head index is updated by the interrupt routine, while the tail index is used by the main program to retrieve buffered characters.
+| Parameter | Value |
+| :--- | :--- |
+| Total Buffer Size | 16 bytes |
+| Usable Capacity | 15 bytes |
+| Reserved Positions | 1 slot to distinguish full and empty states |
+| Overflow Handling | Newly received characters are discarded when the buffer is full |
+
+The indices wrap around to the beginning when they reach the end of the buffer. The interrupt routine updates the head index, while the main program updates the tail index.
 
 ## Main Program Operation
 
-The main program continuously checks whether the circular buffer contains unread data.
+The main program continuously checks the circular buffer for unread characters.
 
-When a character is available:
+When data is available:
 
-1. Retrieve the character from the position indicated by the tail index.
+1. Retrieve the character at the position indicated by the tail index.
 2. Update the tail index to the next buffer position.
 3. Transmit the retrieved character through UART.
 4. Continue checking for additional buffered characters.
 
-This separates character reception from character processing and echo transmission.
+This allows the main program to process and echo received characters independently of the UART reception interrupt.
+
+## Program Flow
+
+```text
+             Start
+               |
+               v
+        Initialize UART
+               |
+               v
+       Configure Timer 1
+           Mode 2
+               |
+               v
+       Set Baud Rate: 9600
+               |
+               v
+      Enable Serial Interrupt
+        and Global Interrupt
+               |
+               v
+          Main Loop
+               |
+               v
+       Check Ring Buffer
+               |
+          Data Available?
+           /       \
+         No         Yes
+         |           |
+         |           v
+         |      Read Character
+         |       from Buffer
+         |           |
+         |           v
+         |      Update Tail
+         |           |
+         |           v
+         |      Transmit via UART
+         |           |
+         |___________|
+               |
+               v
+          Repeat Loop
+
+
+      Serial Interrupt Routine
+               |
+               v
+       Character Received
+               |
+               v
+          Read SBUF
+               |
+               v
+       Check Buffer Space
+               |
+          Buffer Full?
+           /       \
+         Yes        No
+          |          |
+          v          v
+      Discard     Store Character
+      Character   at Head Position
+                     |
+                     v
+                Update Head
+                     |
+                     v
+               Return from ISR
+```
 
 ## Source Files
 
 | File | Description |
-|---|---|
-| `taskC.c` | UART initialization, serial interrupt handling, circular buffer management and character echo |
+| :--- | :--- |
+| `taskC.c` | UART initialization, serial interrupt handling, circular buffer management, and character echo |
 | `STARTUP.A51` | 8051 startup assembly file |
 | `CAT6_TaskC.uvproj` | Keil µVision project file |
 | `CAT6_TaskC.hex` | Generated HEX file for microcontroller programming |
 | `circuit.png` | UART interface circuit diagram |
 
-## Programming Concepts
+## Testing and Observations
 
-- Bare-metal Embedded C programming
-- Direct register-level programming
-- UART configuration using SCON and SBUF
-- Timer 1 Mode 2 for baud-rate generation
-- Serial interrupt handling (interrupt 4)
-- Interrupt-driven character reception
-- Circular buffer implementation
-- Head and tail index management
-- Buffer overflow handling
-- Serial communication and debugging using PuTTY
+The program was tested by sending characters through the PuTTY serial terminal.
 
-## Observations
+**Observed Results:**
 
-- The serial interrupt is triggered when a character is received.
-- Incoming characters are stored in the circular buffer.
-- The head and tail indices manage buffer storage and retrieval.
-- The main program retrieves buffered characters and echoes them to the PC terminal.
-- When the buffer reaches its usable capacity, additional incoming characters are discarded.
-- UART communication operates at 9600 baud.
+- The serial interrupt was triggered when a character was received.
+- Incoming characters were stored in the circular buffer.
+- The head and tail indices managed buffer storage and retrieval.
+- The main program retrieved buffered characters and echoed them to the PC terminal.
+- When the buffer reached its usable capacity, additional incoming characters were discarded.
+- UART communication operated at 9600 baud.
+
+## Key Concepts Demonstrated
+
+- Bare-metal Embedded C programming.
+- Direct register-level programming.
+- UART configuration using `SCON` and `SBUF`.
+- Timer 1 Mode 2 for baud-rate generation.
+- Serial interrupt handling (Interrupt 4).
+- Interrupt-driven character reception.
+- Circular buffer implementation.
+- Head and tail index management.
+- Buffer overflow handling.
+- Asynchronous serial communication.
+
+## Inference
+
+The experiment successfully demonstrated interrupt-driven UART reception and circular buffer management using the AT89S52 microcontroller. Incoming characters were handled through the serial interrupt, stored temporarily in the ring buffer, and retrieved by the main program for transmission back to the PC.
 
 ## Conclusion
 
-The experiment demonstrates interrupt-driven UART reception and circular buffer management using the AT89S52 microcontroller. By handling incoming data through a serial interrupt, the program avoids continuous polling and allows the main program to process received characters independently.
-
-The implementation provides practical experience with UART configuration, interrupt handling, circular buffer operations, and asynchronous serial communication in embedded systems.
+The experiment provided practical understanding of interrupt-driven serial communication, UART configuration, and circular buffer operations. By separating data reception from processing, the implementation demonstrates an efficient approach to handling asynchronous serial data in embedded systems.

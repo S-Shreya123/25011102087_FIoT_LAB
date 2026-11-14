@@ -1,13 +1,25 @@
-# CAT6 – Task B: UART Character Reception and Echo
+# CAT6 – Task B: UART Character Reception and Echo Using AT89S52
 
-## Experiment Overview
+## Experiment Details
 
-This experiment demonstrates UART-based serial communication between an **AT89S52 microcontroller** and a PC. Characters entered through a serial terminal are received by the microcontroller and transmitted back to the PC using a polling-based UART echo mechanism.
+| Field | Description |
+| :--- | :--- |
+| **Experiment ID** | CAT6 |
+| **Date** | 20/08/2026 |
+| **Experiment Name** | UART Character Reception and Echo |
+| **Task Number** | Task B |
+| **Microcontroller** | AT89S52 |
+| **Development Board** | 8051 Universal Development Board |
+| **Programming Language** | Embedded C |
 
-## Hardware and Software Requirements
+## Objective
+
+To establish serial communication between the AT89S52 microcontroller and a PC using UART. The experiment implements a polling-based echo mechanism in which characters received from the PC are transmitted back through the UART interface.
+
+## Hardware Requirements
 
 | Component | Specification |
-|---|---|
+| :--- | :--- |
 | Microcontroller | AT89S52 |
 | Development Board | 8051 Universal Development Board |
 | Operating Voltage | +5V |
@@ -19,81 +31,127 @@ This experiment demonstrates UART-based serial communication between an **AT89S5
 | PC Serial Terminal | PuTTY |
 | Baud Rate | 9600 |
 | Programming Environment | Keil µVision |
-| Programming Language | Embedded C |
 
-## Circuit Connections
-
-The AT89S52 communicates with the PC through a USB-to-TTL serial converter.
-
-| AT89S52 | USB-to-TTL Converter |
-|---|---|
-| P3.0 (RXD) | TX |
-| P3.1 (TXD) | RX |
-| GND | GND |
-
-The USB-to-TTL converter connects to the PC through USB. The serial terminal is configured to communicate at **9600 baud**.
+## Circuit Diagram
 
 [Circuit Diagram](circuit.png)
 
+### Hardware Connections
+
+| AT89S52 | USB-to-TTL Converter | Description |
+| :--- | :--- | :--- |
+| P3.0 (RXD) | TX | Receives serial data from the PC |
+| P3.1 (TXD) | RX | Transmits serial data to the PC |
+| GND | GND | Common ground |
+
+The USB-to-TTL converter connects to the PC through USB. PuTTY is used as the serial terminal with a baud rate of 9600.
+
+**Note:** Use a TTL-level USB-to-Serial converter compatible with the AT89S52's 5V logic. Do not use an RS-232 interface directly.
+
+## UART Configuration
+
+| Parameter | Configuration |
+| :--- | :--- |
+| Baud Rate | 9600 |
+| Timer | Timer 1 |
+| Timer Mode | Mode 2 (8-bit auto-reload) |
+| Serial Mode | Mode 1 (8-bit UART) |
+| Reception | Polling using RI flag |
+| Transmission | Polling using TI flag |
+
 ## Working Principle
 
-The program implements a simple UART echo mechanism using polling.
+The program implements UART-based character reception and echo using polling.
 
 1. Initialize UART using Timer 1 in Mode 2.
 2. Configure serial communication for 9600 baud.
 3. Continuously monitor the RI (Receive Interrupt) flag.
-4. When RI becomes 1, read the received character from SBUF.
+4. When RI becomes 1, read the received character from the SBUF register.
 5. Clear the RI flag.
 6. Load the received character into SBUF to initiate transmission.
 7. Wait until the TI (Transmit Interrupt) flag becomes 1.
-8. Clear the TI flag and repeat the process.
+8. Clear the TI flag.
+9. Repeat the process for subsequent characters.
 
-This allows each character received from the PC to be transmitted back through UART.
+This allows every character received from the PC to be transmitted back through the UART interface.
 
-## UART Configuration
+## Program Flow
 
-- **Baud Rate:** 9600
-- **Timer:** Timer 1
-- **Timer Mode:** Mode 2 (8-bit auto-reload)
-- **Serial Configuration:** 8-bit UART
-- **Reception:** Polling using RI
-- **Transmission:** Polling using TI
+```text
+        Start
+          |
+          v
+    Initialize UART
+          |
+          v
+  Configure Timer 1
+      Mode 2
+          |
+          v
+  Set Baud Rate: 9600
+          |
+          v
+   Check RI Flag
+          |
+     RI = 1?
+          |
+          v
+   Read SBUF
+          |
+          v
+     Clear RI
+          |
+          v
+  Write Character
+      to SBUF
+          |
+          v
+   Check TI Flag
+          |
+     TI = 1?
+          |
+          v
+     Clear TI
+          |
+          v
+    Repeat Process
+```
 
 ## Source Files
 
 | File | Description |
-|---|---|
+| :--- | :--- |
 | `taskB.c` | Embedded C program for UART character reception and echo |
 | `STARTUP.A51` | 8051 startup assembly file |
 | `CAT6_TaskB.uvproj` | Keil µVision project file |
 | `CAT6_TaskB.hex` | Generated HEX file for microcontroller programming |
 | `circuit.png` | UART interface circuit diagram |
 
-## Programming Approach
-
-The experiment uses bare-metal Embedded C programming with direct access to the 8051 UART registers.
-
-Key concepts demonstrated:
-
-- UART configuration using `SCON` and `SBUF`
-- Timer 1 Mode 2 for baud-rate generation
-- Character reception using the RI flag
-- Character transmission using the TI flag
-- Polling-based serial communication
-- Serial communication testing using PuTTY
-
 ## Testing and Observations
 
 The program was tested by entering characters through the PuTTY serial terminal.
 
-Observed results:
+**Observed Results:**
 
-- Characters entered in PuTTY are successfully received by the AT89S52.
-- Each received character is transmitted back to the PC.
-- The RI flag indicates the reception of a character.
-- The TI flag indicates completion of character transmission.
-- UART communication operates at 9600 baud.
+- Characters entered in PuTTY were successfully received by the AT89S52.
+- Each received character was transmitted back to the PC.
+- The RI flag indicated the reception of a character.
+- The TI flag indicated the completion of character transmission.
+- UART communication operated at 9600 baud.
+
+## Key Concepts Demonstrated
+
+- UART configuration using `SCON` and `SBUF` registers.
+- Timer 1 Mode 2 for baud-rate generation.
+- Character reception using the RI flag.
+- Character transmission using the TI flag.
+- Polling-based serial communication.
+- Serial communication testing using PuTTY.
 
 ## Inference
 
-The experiment successfully demonstrates bidirectional serial communication between the AT89S52 microcontroller and a PC. The UART echo mechanism provides practical understanding of character reception, transmission, the RI and TI flags, and polling-based serial communication.
+The experiment successfully demonstrated bidirectional serial communication between the AT89S52 microcontroller and a PC. The UART echo mechanism provided practical understanding of character reception, transmission, RI and TI flags, and polling-based serial communication.
+
+## Conclusion
+
+UART communication was successfully established between the AT89S52 and the PC using a USB-to-TTL converter. The experiment demonstrated how the 8051 microcontroller can receive and retransmit serial data using its built-in UART peripheral and polling mechanism.

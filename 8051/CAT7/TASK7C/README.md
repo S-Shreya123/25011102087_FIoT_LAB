@@ -7,7 +7,7 @@ This experiment focuses on interfacing a 16×2 character LCD and a 4×4 matrix k
 | Parameter | Details |
 |---|---|
 | Experiment | CAT7 |
-| Date | 24/08/2026 (Week 6) |
+| Date | 27/08/2026 (Week 6) |
 | Microcontroller | AT89S52 |
 | Development Board | 8051 Development Board |
 | Display | 16×2 HD44780-compatible LCD |

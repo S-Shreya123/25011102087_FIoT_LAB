@@ -1,7 +1,7 @@
 # EXPERIMENT DETAILS
 
 **EXP:** CONTINUOUS LAB EVALUATION-11  
-**DATE:** 22/10/2026  
+**DATE:** 15/10/2026  
 **NAME OF EXP:** HTTP Server using STM32–Wemos Wi-Fi Modem and AT Commands  
 **HARDWARE SETUP:** STM32 Development Board + Wemos D1 Mini (ESP8266)  
 **PLATFORM:** STM32CubeMX + Keil MDK
